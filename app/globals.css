@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-deep: #020108; /* Ultra-dark for premium contrast */
+    --card-glass: rgba(255, 255, 255, 0.01);
+    --border-glass: rgba(255, 255, 255, 0.04);
+    --accent-purple: #8B5CF6;
+    --accent-blue: #3B82F6;
+    --glow-color: rgba(139, 92, 246, 0.15);
+  }
+
+  body {
+    background-color: var(--bg-deep);
+    color: white;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    /* Architectural Grid Overlay */
+    background-image: 
+      linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+/* --- THE "ULTRA" CARD ARCHITECTURE --- */
+.course-card, .offering-card, .webinar-card, .stat-card, .glass-panel {
+  background: var(--card-glass);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--border-glass);
+  border-radius: 28px;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  will-change: transform, box-shadow;
+}
+
+.course-card:hover, .stat-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  border-color: rgba(139, 92, 246, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 
+    0 40px 80px -20px rgba(0, 0, 0, 0.8),
+    0 0 40px -10px var(--glow-color);
+}
+
+/* --- INFINITE MARQUEE (PARTNERS) --- */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.logo-tile {
+  width: 176px;
+  height: 88px;
+  flex: 0 0 176px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 26px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
+    rgba(255, 255, 255, 0.02);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+}
+
+.logo-tile:hover {
+  transform: translateY(-4px);
+  border-color: rgba(34, 211, 238, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
+    rgba(255, 255, 255, 0.035);
+}
+
+.premium-logo-image {
+  max-width: 100%;
+  max-height: 46px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  opacity: 0.88;
+  filter: saturate(0.9) brightness(1.08);
+  transition: transform 0.35s ease, opacity 0.35s ease, filter 0.35s ease;
+}
+
+.logo-tile:hover .premium-logo-image {
+  opacity: 1;
+  filter: saturate(1.04) brightness(1.12);
+  transform: scale(1.04);
+}
+
+/* Edge Fading for Marquee */
+.logo-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+}
+
+@media (max-width: 640px) {
+  .logo-tile {
+    width: 136px;
+    height: 72px;
+    flex-basis: 136px;
+    padding: 14px 18px;
+    border-radius: 18px;
+  }
+
+  .premium-logo-image {
+    max-height: 36px;
+  }
+}
+
+/* --- PREMIUM TEXT & UI --- */
+.shimmer-text {
+  background: linear-gradient(
+    to right,
+    #94a3b8 20%,
+    #ffffff 40%,
+    #ffffff 60%,
+    #94a3b8 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+
+/* Button Shine Effect */
+.btn-premium {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.btn-premium::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 20%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(30deg);
+  transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  opacity: 0;
+}
+
+.btn-premium:hover::after {
+  left: 120%;
+  opacity: 1;
+}
+
+/* --- BACKGROUND ANIMATION --- */
+.mesh-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: 
+    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.08), transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.08), transparent 40%);
+  filter: blur(140px);
+  z-index: -1;
+  animation: mesh-pulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes mesh-pulse {
+  from { opacity: 0.5; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.1); }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
